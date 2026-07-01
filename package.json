@@ -1,0 +1,27 @@
+{
+  "name": "book-notes",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/OverlordGummyBear/Book-Notes#readme",
+  "bugs": {
+    "url": "https://github.com/OverlordGummyBear/Book-Notes/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OverlordGummyBear/Book-Notes.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "axios": "^1.18.1",
+    "body-parser": "^2.3.0",
+    "ejs": "^6.0.1",
+    "express": "^5.2.1",
+    "pg": "^8.22.0"
+  }
+}
