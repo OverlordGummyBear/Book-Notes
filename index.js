@@ -47,12 +47,6 @@ app.post("/book", async (req, res) => {
     const author = req.body.author || 'unknown';
     const year = req.body.year;
     const coverId = req.body.cover_i || 'unknown';
-    
-    console.log(title);
-    console.log(author);
-    console.log(year);
-    console.log(coverId);
-
 
     res.render("book.ejs", {
         title: title,

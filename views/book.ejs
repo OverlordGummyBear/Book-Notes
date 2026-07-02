@@ -12,8 +12,38 @@
         <h3> By <%= author %> </h3>
         <h3> From <%= year %> </h3>
 
+
+        <!--Make sure that the title, review text and stars cannot be empty-->
+        <!--Double check whether the user wants to cancel the review-->
+        <form id="review_form" action="" style="display: none">
+            <input type="text" name="review_title" placeholder="Title for your review">
+            <textarea id="review-text" name="review-text" placeholder="Write review here..."></textarea> 
+            <div>
+                <input type="submit" value="Save Review">
+                <input type="submit" value="Cancel Review">
+            </div>
+        </form>
         <!--Add check to see whether there is already a review-->
+        <!--If there is, maybe use the other layout-->
+
+        <button id="create_review" onclick="toogleVisibility()"> Create Review </button>
+
+        
     </div>
 </div>
+
+
+<script>
+    function toogleVisibility() {
+        var x = document.getElementById("review_form");
+        document.getElementById("create_review").style.display = "none";
+
+        if (x.style.display === "none") {
+            x.style.display = "flex";
+        } else {
+            x.style.display = "none";
+        }
+    }
+</script>
 
 <%- include("partials/footer.ejs") %>

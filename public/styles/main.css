@@ -83,6 +83,12 @@ h1{
     min-width: 22%;
 }
 
+#review_form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
 /* Result page */
 .search-result-container{
     display: flex;
