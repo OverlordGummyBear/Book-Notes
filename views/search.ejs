@@ -4,7 +4,7 @@
     <% if(total_results > 0){ %>
         <% books.forEach(book => { %>
             <div class="book-search-container">
-                <% if(locals.bookcover_i){ %>
+                <% if('cover_i' in book){ %>
                     <img src="https://covers.openlibrary.org/b/id/<%= book.cover_i %>-M.jpg" alt="picture of book cover" />
                 <% } else { %>
                     <img src="/images/book-placeholder-m.jpg" alt="picture of book cover" />
@@ -28,17 +28,28 @@
     %>
 
     
+    <% if(currentPage - 4 > 1){ %>
+        <form action="/search" method="post">
+            <!--Elements that the query need to get to the correct page -->
+            <input type="hidden" name="search" value="<%= search %>">
+            <input type="hidden" name="page" value="<%= 1 %>">
+            <% if (currentPage===1) { %>
+                <p> << </p> <!--Use < in a p so it cannot be cliced on-->
+            <% } else { %>
+                <button type="submit"> << </button>
+            <% } %>
+        </form>
+    <% } %>
+
     <form action="/search" method="post">
         <!--Elements that the query need to get to the correct page -->
         <input type="hidden" name="search" value="<%= search %>">
         <input type="hidden" name="page" value="<%= currentPage - 1 %>">
         <% if (currentPage===1) { %>
-            <p>
-                < </p> <!--Use < in a p so it cannot be cliced on-->
-                    <% } else { %>
-                        <button type="submit">
-                            < </button>
-                                <% } %>
+            <p> < </p> <!--Use < in a p so it cannot be cliced on-->
+        <% } else { %>
+            <button type="submit"> < </button>
+        <% } %>
     </form>
     
     <% for (let index=counter; index <=maxPages; index++) { %>
@@ -58,16 +69,29 @@
         </form>
     <% } %>
     
+    <form action="/search" method="post">
+        <!--Elements that the query need to get to the correct page -->
+        <input type="hidden" name="search" value="<%= search %>">
+        <input type="hidden" name="page" value="<%= currentPage + 1 %>">
+        <% if (currentPage===pages) { %>
+            <p> > </p>
+        <% } else { %>
+            <button type="submit"> > </button>
+        <% } %>
+    </form>
+
+    <% if(currentPage + 6 <= pages){ %>
         <form action="/search" method="post">
             <!--Elements that the query need to get to the correct page -->
             <input type="hidden" name="search" value="<%= search %>">
-            <input type="hidden" name="page" value="<%= currentPage + 1 %>">
+            <input type="hidden" name="page" value="<%= pages %>">
             <% if (currentPage===pages) { %>
-                <p> > </p>
+                <p> >> </p>
             <% } else { %>
-                <button type="submit"> > </button>
+                <button type="submit"> >> </button>
             <% } %>
         </form>
+    <% } %>
 </div>
 
 
