@@ -1,5 +1,19 @@
 <%- include("partials/header.ejs") %>
 
-<h1>This is the new page </h1>
+<div class="book-container">
+    <% if(coverId !='unknown' ){ %>
+        <img src="https://covers.openlibrary.org/b/id/<%= coverId %>-L.jpg" alt="picture of book cover">
+    <% } else { %>
+        <img src="/images/book-placeholder-L.jpg" alt="picture of placeholder cover" style="width: 40vh;">
+    <% } %>
+
+    <div class="book-details">
+        <h2> <%= title %> </h2>
+        <h3> By <%= author %> </h3>
+        <h3> From <%= year %> </h3>
+
+        <!--Add check to see whether there is already a review-->
+    </div>
+</div>
 
 <%- include("partials/footer.ejs") %>

@@ -24,8 +24,6 @@ app.post("/sort", (req, res) => {
 
 app.post("/search", async (req, res) => {
     const search = req.body.search;
-    //can have hidden attributes, so use that
-
     const page = req.body.page || 1;
 
     try{
@@ -34,6 +32,7 @@ app.post("/search", async (req, res) => {
         res.render("search.ejs", {
             total_results: result.data.num_found,
             books: result.data.docs,
+            //Next three is for pagination
             pages: Math.round((result.data.num_found  / searchLimit) + 0.5), //make sure to round up
             currentPage: page,
             search: search
@@ -41,6 +40,26 @@ app.post("/search", async (req, res) => {
     } catch(err){
         console.error("Failed to make request: " + err.message);
     }
+});
+
+app.post("/book", async (req, res) => {
+    const title = req.body.title;
+    const author = req.body.author || 'unknown';
+    const year = req.body.year;
+    const coverId = req.body.cover_i || 'unknown';
+    
+    console.log(title);
+    console.log(author);
+    console.log(year);
+    console.log(coverId);
+
+
+    res.render("book.ejs", {
+        title: title,
+        author: author,
+        year: year,
+        coverId: coverId
+    });
 });
 
 app.get("/new", (req, res) => {
