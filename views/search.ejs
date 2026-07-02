@@ -4,13 +4,13 @@
     <% if(total_results > 0){ %>
         <% books.forEach(book => { %>
             <div class="book-search-container">
-                <% if(book.cover_i){ %>
+                <% if(locals.bookcover_i){ %>
                     <img src="https://covers.openlibrary.org/b/id/<%= book.cover_i %>-M.jpg" alt="picture of book cover" />
                 <% } else { %>
                     <img src="/images/book-placeholder-m.jpg" alt="picture of book cover" />
                 <% } %>
                 <p> <%= book.title %> </p>
-                <p> <%= book.author_name[0] %> </p>
+                <p> <%= book.author_name ? book.author_name[0] : "Unknown Author" %> </p>
             </div>
         <% }); %>
     <%  } else { %>
