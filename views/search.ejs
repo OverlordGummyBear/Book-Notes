@@ -1,0 +1,74 @@
+<%- include("partials/header.ejs") %>
+
+<div class="search-result-container">
+    <% if(total_results > 0){ %>
+        <% books.forEach(book => { %>
+            <div class="book-search-container">
+                <% if(book.cover_i){ %>
+                    <img src="https://covers.openlibrary.org/b/id/<%= book.cover_i %>-M.jpg" alt="picture of book cover" />
+                <% } else { %>
+                    <img src="/images/book-placeholder-m.jpg" alt="picture of book cover" />
+                <% } %>
+                <p> <%= book.title %> </p>
+                <p> <%= book.author_name[0] %> </p>
+            </div>
+        <% }); %>
+    <%  } else { %>
+        <p> Search does not match any books </p>
+    <% } %>
+</div>
+
+<div class="pagination-container">
+    <% 
+        currentPage = Number(currentPage)
+        let counter = ((currentPage - 5) < 1) ? 1 : currentPage - 4;
+        let maxPages = ((currentPage + 4) > pages) ? pages : counter + 9;
+
+        if(maxPages > pages ) maxPages = pages; //Make sure maxPages is never larger than pages
+    %>
+
+    
+    <form action="/search" method="post">
+        <!--Elements that the query need to get to the correct page -->
+        <input type="hidden" name="search" value="<%= search %>">
+        <input type="hidden" name="page" value="<%= currentPage - 1 %>">
+        <% if (currentPage===1) { %>
+            <p>
+                < </p> <!--Use < in a p so it cannot be cliced on-->
+                    <% } else { %>
+                        <button type="submit">
+                            < </button>
+                                <% } %>
+    </form>
+    
+    <% for (let index=counter; index <=maxPages; index++) { %>
+        <form action="/search" method="post">
+            <!--Elements that the query need to get to the correct page -->
+            <input type="hidden" name="search" value="<%= search %>">
+            <input type="hidden" name="page" value="<%= index %>">
+            <% if (currentPage===index) { %>
+                <p>
+                    <%= index %>
+                </p>
+                <% } else { %>
+                    <button type="submit">
+                        <%= index %>
+                    </button>
+                    <% } %>
+        </form>
+    <% } %>
+    
+        <form action="/search" method="post">
+            <!--Elements that the query need to get to the correct page -->
+            <input type="hidden" name="search" value="<%= search %>">
+            <input type="hidden" name="page" value="<%= currentPage + 1 %>">
+            <% if (currentPage===pages) { %>
+                <p> > </p>
+            <% } else { %>
+                <button type="submit"> > </button>
+            <% } %>
+        </form>
+</div>
+
+
+<%- include("partials/footer.ejs") %>

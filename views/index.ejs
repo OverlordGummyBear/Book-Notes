@@ -1,5 +1,29 @@
 <%- include("partials/header.ejs") %>
 
-<h1> This is the index </h1>
+<div class="search-container">
+    <form class="book-search" action="/search" method="post">
+        <input type="text" name="search" placeholder="Enter book name, author or isbn">
+        <input type="submit" value="Search">
+    </form>
+</div>
+
+<div class="sort">
+    <p>Sort by </p>
+    <form action="/sort" method="post">
+        <select id="sort" name="sort">
+            <option value="title"> Title </option>
+            <option value="rating_upward"> Rating ASC </option>
+            <option value="rating_downward"> Rating DESC </option>
+            <option value="newest"> Newest </option>
+            <option value="oldest"> Oldest </option>
+        </select>
+        <input type="submit" value="Go">
+    </form>
+</div>
+
+<div class="content-container">
+    
+</div>
+
 
 <%- include("partials/footer.ejs") %>
