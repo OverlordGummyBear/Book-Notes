@@ -60,8 +60,6 @@
                         <button type="button" onclick="confirmCancelation(<%= JSON.stringify(locals.review || null) %>)"> Cancel </button>
                     </div>
                 </form>
-                <!--Add check to see whether there is already a review-->
-                <!--If there is, maybe use the other layout-->
                 
                 <button id="create_review" onclick="toogleVisibility()"> Create Review </button>
             </div>
@@ -71,18 +69,18 @@
                 <p> <%= review.review_text %> </p>
                 
                 <% for(let i = 1; i <= review.rating; i++){ %>
-                    <label class="checked">
+                    <label class="checked" style="pointer-events: none">
                         <span class="fa fa-star"></span>
                     </label>
                 <% } %>
                 <% for(let i= review.rating; i < 5; i++){ %>
-                    <label>
+                    <label style="pointer-events: none">
                         <span class="fa fa-star"></span>
                     </label>
                 <% } %>
 
                 <form>
-                    <button type="button" onclick="enableEdit()"> Edit </button>
+                    <button type="button" onclick="enableEdit(<%= JSON.stringify(locals.review.rating) %>)"> Edit </button>
                     <input type="submit" value="Delete" formaction="/delete" formmethod="delete">
                     
                 </form>
@@ -94,11 +92,18 @@
 
 
 <script>
-    function enableEdit(){
+    function enableEdit(starID){
         document.getElementById("review-changable").style.display = "inline-block";
         document.getElementById("review-unchangeble").style.display = "none";
 
         toogleVisibility();
+        
+        
+
+        document.querySelector('label[for="' + starID + '"]').click();
+        currentRating = starID;
+        console.log(currentRating);
+        
     }
 
     function toogleVisibility() {
@@ -120,15 +125,18 @@
             form.reset();
             form.style.display = "none";
 
-            //Reset the stars rating
-            document.querySelector('label[for="4"]').click();
-            document.querySelector('label[for="5"]').click();
-            document.querySelector('label[for="5"]').click();
+            console.log(currentRating);
 
             if(review != null){
                 document.getElementById("review-changable").style.display = "none";
                 document.getElementById("review-unchangeble").style.display = "inline-block"; 
+                currentRating = review.rating;
             } else {
+                //Reset the stars rating
+                document.querySelector('label[for="4"]').click();
+                document.querySelector('label[for="5"]').click();
+                document.querySelector('label[for="5"]').click();
+
                 document.getElementById("create_review").style.display = "inline-block";
             }
         }

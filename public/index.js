@@ -1,9 +1,10 @@
+  let currentRating = 0;
+
 document.addEventListener('DOMContentLoaded', function(){
     const label = $("label");
     const labelArray = document.querySelectorAll("label");
 
     //Add checked (orange color) class clicked labels.    
-    let currentRating = 0;
     document.getElementById("0").checked = true; //mark it so it has a current rating of 0 if no clicks
 
     label.on("click", function(event) {
@@ -12,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function(){
         const ratingInputs = document.getElementsByName('rating'); 
         const selectedRating = Array.from(ratingInputs).find(input => input.checked); //get the rating value
         const rating = Number(selectedRating.value);
-        
+
         label.removeClass("checked");        
 
         if(currentRating != rating){       
@@ -27,5 +28,8 @@ document.addEventListener('DOMContentLoaded', function(){
             currentRating = 0;
             document.getElementById("0").checked = true;
         }
+
+        
+        
     })   
 });
