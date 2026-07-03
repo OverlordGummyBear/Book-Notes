@@ -69,8 +69,6 @@ app.post("/book", async (req, res) => {
     const isFound = data.find((book) => book.title === title);
     const review = isFound == undefined ? undefined : isFound;
 
-    console.log(review);
-
     res.render("book.ejs", {
         title: title,
         author: author,
@@ -125,8 +123,33 @@ app.post("/updateReview", (req, res) => {
 
 });
 
-app.delete("/delete", (req, res) => {
+app.delete("/delete/:id", async (req, res) => {
+    const id = req.params.id;
 
+    try {
+        await db.query('BEGIN');
+
+        await db.query(
+            `DELETE FROM reviews
+            WHERE book_id = $1`,
+            [id]
+        );
+
+        await db.query(
+            `DELETE FROM books
+            WHERE book_id = $1`,
+            [id]
+        );
+
+        await db.query('COMMIT');
+
+        res.sendStatus(200);
+    } catch (error) {
+        await db.query('ROLLBACK');
+        console.log("An error occured: ", error)
+    }
+
+    
 });
 
 

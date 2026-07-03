@@ -82,7 +82,7 @@
 
                     <form>
                         <button type="button" onclick="enableEdit(<%= JSON.stringify(locals.review.rating) %>)"> Edit </button>
-                        <input type="submit" value="Delete" formaction="/delete" formmethod="delete">
+                        <button onclick="deleteData('<%=review.book_id%>')" type="button">Delete</button>
                         
                     </form>
                 </div>
@@ -122,18 +122,21 @@
     function confirmCancelation(review){
         const confirmed = window.confirm("Are you sure you want to cancel the review?");
 
+        console.log(confirmed);
+
         if(confirmed){
             var form = document.getElementById('review_form');
             form.reset();
             form.style.display = "none";
 
             let temporaryCurrent = currentRating;
-            currentRating = review.rating;
 
             //console.log("Rating: " + review.rating);
             //console.log("CurrentRating: " + currentRating);
 
             if(review != null){
+                currentRating = review.rating;
+
                 document.getElementById("review-changable").style.display = "none";
                 document.getElementById("review-unchangeble").style.display = "inline-block"; 
                 
@@ -144,17 +147,32 @@
                 }  
 
                 currentRating = temporaryCurrent;
-            } /*else {
-                //Reset the stars rating
-                document.querySelector('label[for="4"]').click();
-                document.querySelector('label[for="5"]').click();
-                document.querySelector('label[for="5"]').click();
+            } 
+        } 
 
-                document.getElementById("create_review").style.display = "inline-block";
-            } */
+        if(review == null){ //Make create review button appear if canceling
+            document.getElementById("create_review").style.display = "inline-block";
         }
     }
 
+    async function deleteData(bookId){
+        const isConfirmed = window.confirm("Are you sure you want to delete this item?");
+
+        if(!isConfirmed){
+            console.log("Deletion is canceled by user");
+            return;
+        }
+
+        try{
+            const response = await fetch("/delete/" + bookId, { //send fetch request to delete endpoint
+                method: "DELETE"
+            });
+
+            window.location.href = "/"; //redirect to home page
+        } catch(error){
+            console.error("There was a problem with the fetch operation: ", error);
+        }
+    }
 </script>
 
 <%- include("partials/footer.ejs") %>
