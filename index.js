@@ -56,15 +56,21 @@ app.post("/book", async (req, res) => {
     });
 });
 
-app.get("/new", (req, res) => {
+app.post("/addBook", (req, res) => {
+    const title = req.body.title;
+    const author = req.body.author;
+    const year = req.body.year;
+    const coverId = req.body.coverId;
+    const rating0 = req.body.rating0 || false;
+    const rating = rating0 ? 0 : req.body.rating;
 
 });
 
-app.post("/edit", (req, res) => {
+app.post("/updateReview", (req, res) => {
 
 });
 
-app.post("/delete", (req, res) => {
+app.delete("/delete", (req, res) => {
 
 });
 

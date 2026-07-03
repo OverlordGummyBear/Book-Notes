@@ -15,19 +15,50 @@
 
         <!--Make sure that the title, review text and stars cannot be empty-->
         <!--Double check whether the user wants to cancel the review-->
-        <form id="review_form" action="" style="display: none">
-            <input type="text" name="review_title" placeholder="Title for your review">
-            <textarea id="review-text" name="review-text" placeholder="Write review here..."></textarea> 
+        <form id="review_form" style="display: none">
+            <input type="hidden" name="title" value="<%= title %>">
+            <input type="hidden" name="author" value="<%= author %>">
+            <input type="hidden" name="year" value="<%= year %>">
+            <input type="hidden" name="coverId" value="<%= coverId %>">
+
+            <input type="text" name="review_title" placeholder="Title for your review" required>
+            <textarea id="review-text" name="review-text" placeholder="Write review here..." required></textarea> 
+
+            <h3>Rating:</h3>
+            <div class="rating">
+                <input id="1" type="radio" name="rating" value="1">
+                <label for="1">
+                    <span class="fa fa-star"></span>
+                </label>
+                <input id="2" type="radio" name="rating" value="2">
+                <label for="2">
+                    <span class="fa fa-star"></span>
+                </label>
+                <input id="3" type="radio" name="rating" value="3">
+                <label for="3">
+                    <span class="fa fa-star"></span>
+                </label>
+                <input id="4" type="radio" name="rating" value="4">
+                <label for="4">
+                    <span class="fa fa-star"></span>
+                </label>
+                <input id="5" type="radio" name="rating" value="5">
+                <label for="5">
+                    <span class="fa fa-star"></span>
+                </label>
+                <input id="0" type="radio" name="rating0" value="true" hidden>
+            </div>
+
             <div>
-                <input type="submit" value="Save Review">
-                <input type="submit" value="Cancel Review">
+                <input type="submit" value="Save Review" formaction="/addBook" formmethod="post">
+                <!-- <input type="submit" value="Cancel Review" onclick="confirmCancelation()"> -->
+                <button type="button" onclick="confirmCancelation()"> Cancel </button>
             </div>
         </form>
         <!--Add check to see whether there is already a review-->
         <!--If there is, maybe use the other layout-->
 
         <button id="create_review" onclick="toogleVisibility()"> Create Review </button>
-
         
     </div>
 </div>
@@ -44,6 +75,33 @@
             x.style.display = "none";
         }
     }
+
+    function validateForm() {
+        // Check if a radio button is selected
+        const ratingInputs = document.getElementsByName('rating');
+        const selectedRating = Array.from(ratingInputs).find(input => input.checked);
+
+        if (!selectedRating) {
+            document.getElementById('error-message').innerText = 'Please select a rating';
+        }
+    }
+
+    function confirmCancelation(){
+        const confirmed = window.confirm("Are you sure you want to cancel the review?")
+
+        if(confirmed){
+            var form = document.getElementById('review_form');
+            form.reset();
+            form.style.display = "none";
+            document.getElementById("create_review").style.display = "inline-block";
+
+            //Reset the stars rating
+            document.querySelector('label[for="4"]').click();
+            document.querySelector('label[for="5"]').click();
+            document.querySelector('label[for="5"]').click();
+        }
+    }
+
 </script>
 
 <%- include("partials/footer.ejs") %>
