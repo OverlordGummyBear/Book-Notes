@@ -19,16 +19,51 @@ db.connect();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-let sort = "review_id";
+let sort = "book_title";
 let searchLimit = 50;
 
-app.get("/", (req, res) => {
-    res.render("index.ejs");
+app.get("/", async (req, res) => {
+    switch(sort){
+        case "book_title":
+            sort = "b.title ASC";
+            break;
+        case "author":
+            sort = "b.author ASC";
+            break;
+        case "rating_upward":
+            sort = "r.rating ASC"
+            break;
+        case "rating_downward":
+            sort = "r.rating DESC";
+            break;
+        case "newest":
+            sort = "r.date DESC";
+            break;
+        case "oldest":
+            sort = "r.date ASC";
+            break;
+    }
+    
+    try {
+        const result = await db.query(
+            `SELECT *
+            FROM reviews r
+            JOIN books b ON b.book_id = r.book_id
+            ORDER BY ${sort}`
+    );
+
+    const data = result.rows; //check what happens if there are no reviews
+    console.log(data);
+
+    res.render("index.ejs", {reviews: data});
+
+    } catch (error) {
+        console.log("Could not execute query: ", error);
+    }
 });
 
 app.post("/sort", (req, res) => {
     sort = req.body.sort;
-    console.log(sort);
     res.redirect("/");
 });
 
@@ -69,6 +104,8 @@ app.post("/book", async (req, res) => {
     const isFound = data.find((book) => book.title === title);
     const review = isFound == undefined ? undefined : isFound;
 
+    console.log(review);
+
     res.render("book.ejs", {
         title: title,
         author: author,
@@ -91,8 +128,6 @@ app.post("/addBook", async (req, res) => {
     const date = new Date().toISOString();
     const review_title = req.body.reviewTitle;
     const review_text = req.body.reviewText;
-
-    //console.log(review_text + review_title);
     
     try{
         await db.query('BEGIN'); //Use transaction to make insertions can be rolled back in cases where there is an error
@@ -119,8 +154,26 @@ app.post("/addBook", async (req, res) => {
     res.redirect("/");
 });
 
-app.post("/updateReview", (req, res) => {
+app.post("/updateReview", async (req, res) => {
+    const rating0 = req.body.rating0 || false;
+    const rating = rating0 ? 0 : req.body.rating; //used for checking whether the rating should be 0 stars
+    const updated_date = new Date().toISOString();
+    const review_title = req.body.reviewTitle;
+    const review_text = req.body.reviewText;
+    const book_id = req.body.bookID;
 
+    try {
+        await db.query(
+            `UPDATE reviews
+            SET rating = $1, review_update_date = $2, review_title = $3, review_text = $4
+            WHERE book_id = $5`,
+            [rating, updated_date, review_title, review_text, book_id]
+        );
+    } catch (error) {
+        console.log("An error occured: ", err);
+    }
+
+    res.redirect("/");
 });
 
 app.delete("/delete/:id", async (req, res) => {

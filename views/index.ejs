@@ -11,7 +11,8 @@
     <p>Sort by </p>
     <form action="/sort" method="post">
         <select id="sort" name="sort">
-            <option value="title"> Title </option>
+            <option value="book_title"> Title </option>
+            <option value="author"> Author </option>
             <option value="rating_upward"> Rating ASC </option>
             <option value="rating_downward"> Rating DESC </option>
             <option value="newest"> Newest </option>
@@ -22,7 +23,22 @@
 </div>
 
 <div class="content-container">
-    
+    <% console.log(locals.reviews) %>
+    <% if(locals.reviews){ %>
+        <% reviews.forEach(review =>{ %>
+            <div class="review">
+                <% if(review.cover_id !='unknown' ){ %>
+                    <img src="https://covers.openlibrary.org/b/id/<%= review.cover_id %>-M.jpg" alt="picture of book cover">
+                <% } else { %>
+                    <img src="/images/book-placeholder-m.jpg" alt="picture of placeholder cover">
+                <% } %>
+                <p> Book title: <%= review.title %> </p>
+                <p> Author: <%= review.author %> </p>
+                <p> Rating: <%= review.rating %> </p>
+                <p> Date: <%= review.date %> </p>
+            </div>
+        <% }) %>
+    <% } %>
 </div>
 
 

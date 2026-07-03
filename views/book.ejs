@@ -18,6 +18,7 @@
                     <input type="hidden" name="author" value="<%= author %>">
                     <input type="hidden" name="year" value="<%= year %>">
                     <input type="hidden" name="coverId" value="<%= coverId %>">
+                    <input type="hidden" name="bookID" value="<%= locals.review != undefined ? review.book_id : undefined %>">
                 
                     <input type="text" name="reviewTitle" placeholder="Title for your review" 
                         <%if(locals.review != undefined){ %> 
