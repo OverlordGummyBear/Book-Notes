@@ -64,27 +64,29 @@
                 <button id="create_review" onclick="toogleVisibility()"> Create Review </button>
             </div>
 
-            <div id="review-unchangeble" style="<%= locals.review != undefined ? 'display: inline-block' : 'display:none' %>">
-                <h2> <%= review.review_title %> </h2>
-                <p> <%= review.review_text %> </p>
-                
-                <% for(let i = 1; i <= review.rating; i++){ %>
-                    <label class="checked" style="pointer-events: none">
-                        <span class="fa fa-star"></span>
-                    </label>
-                <% } %>
-                <% for(let i= review.rating; i < 5; i++){ %>
-                    <label style="pointer-events: none">
-                        <span class="fa fa-star"></span>
-                    </label>
-                <% } %>
-
-                <form>
-                    <button type="button" onclick="enableEdit(<%= JSON.stringify(locals.review.rating) %>)"> Edit </button>
-                    <input type="submit" value="Delete" formaction="/delete" formmethod="delete">
+            <% if(locals.review != undefined){ %>
+                <div id="review-unchangeble" style="<%= locals.review != undefined ? 'display: inline-block' : 'display:none' %>">
+                    <h2> <%= locals.review.review_title %> </h2>
+                    <p> <%= locals.review.review_text %> </p>
                     
-                </form>
-            </div>
+                    <% for(let i = 1; i <= review.rating; i++){ %>
+                        <label class="checked stars<%= review.rating %>" style="pointer-events: none">
+                            <span class="fa fa-star"></span>
+                        </label>
+                    <% } %>
+                    <% for(let i = review.rating; i < 5; i++){ %>
+                        <label style="pointer-events: none">
+                            <span class="fa fa-star"></span>
+                        </label>
+                    <% } %>
+
+                    <form>
+                        <button type="button" onclick="enableEdit(<%= JSON.stringify(locals.review.rating) %>)"> Edit </button>
+                        <input type="submit" value="Delete" formaction="/delete" formmethod="delete">
+                        
+                    </form>
+                </div>
+            <% } %>
 
         
     </div>
@@ -98,12 +100,12 @@
 
         toogleVisibility();
         
-        
+        isEditing = true;
 
         document.querySelector('label[for="' + starID + '"]').click();
+        
         currentRating = starID;
         console.log(currentRating);
-        
     }
 
     function toogleVisibility() {
@@ -125,20 +127,31 @@
             form.reset();
             form.style.display = "none";
 
-            console.log(currentRating);
+            let temporaryCurrent = currentRating;
+            currentRating = review.rating;
+
+            //console.log("Rating: " + review.rating);
+            //console.log("CurrentRating: " + currentRating);
 
             if(review != null){
                 document.getElementById("review-changable").style.display = "none";
                 document.getElementById("review-unchangeble").style.display = "inline-block"; 
-                currentRating = review.rating;
-            } else {
+                
+                let starArray = document.querySelectorAll(`.stars${currentRating}`);
+
+                for (let i = 0; i < currentRating; i++) {
+                    $(starArray[i]).addClass("checked");
+                }  
+
+                currentRating = temporaryCurrent;
+            } /*else {
                 //Reset the stars rating
                 document.querySelector('label[for="4"]').click();
                 document.querySelector('label[for="5"]').click();
                 document.querySelector('label[for="5"]').click();
 
                 document.getElementById("create_review").style.display = "inline-block";
-            }
+            } */
         }
     }
 

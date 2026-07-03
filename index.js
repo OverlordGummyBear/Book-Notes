@@ -69,6 +69,8 @@ app.post("/book", async (req, res) => {
     const isFound = data.find((book) => book.title === title);
     const review = isFound == undefined ? undefined : isFound;
 
+    console.log(review);
+
     res.render("book.ejs", {
         title: title,
         author: author,

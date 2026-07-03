@@ -101,6 +101,10 @@ input[type="radio"] {
     color: orange;
 }
 
+ {
+    pointer-events: none;
+}
+
 /* Result page */
 .search-result-container{
     display: flex;
