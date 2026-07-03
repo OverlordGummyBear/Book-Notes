@@ -12,53 +12,70 @@
         <h3> By <%= author %> </h3>
         <h3> From <%= year %> </h3>
 
+        <% if(locals.review == undefined){ %>
+            <form id="review_form" style="display: none">
+                <input type="hidden" name="title" value="<%= title %>">
+                <input type="hidden" name="author" value="<%= author %>">
+                <input type="hidden" name="year" value="<%= year %>">
+                <input type="hidden" name="coverId" value="<%= coverId %>">
 
-        <!--Make sure that the title, review text and stars cannot be empty-->
-        <!--Double check whether the user wants to cancel the review-->
-        <form id="review_form" style="display: none">
-            <input type="hidden" name="title" value="<%= title %>">
-            <input type="hidden" name="author" value="<%= author %>">
-            <input type="hidden" name="year" value="<%= year %>">
-            <input type="hidden" name="coverId" value="<%= coverId %>">
+                <input type="text" name="reviewTitle" placeholder="Title for your review" required>
+                <textarea type="textarea" id="review-text" name="reviewText" placeholder="Write review here..." required></textarea> 
 
-            <input type="text" name="review_title" placeholder="Title for your review" required>
-            <textarea id="review-text" name="review-text" placeholder="Write review here..." required></textarea> 
+                <h3>Rating:</h3>
+                <div class="rating">
+                    <input id="1" type="radio" name="rating" value="1">
+                    <label for="1">
+                        <span class="fa fa-star"></span>
+                    </label>
+                    <input id="2" type="radio" name="rating" value="2">
+                    <label for="2">
+                        <span class="fa fa-star"></span>
+                    </label>
+                    <input id="3" type="radio" name="rating" value="3">
+                    <label for="3">
+                        <span class="fa fa-star"></span>
+                    </label>
+                    <input id="4" type="radio" name="rating" value="4">
+                    <label for="4">
+                        <span class="fa fa-star"></span>
+                    </label>
+                    <input id="5" type="radio" name="rating" value="5">
+                    <label for="5">
+                        <span class="fa fa-star"></span>
+                    </label>
+                    <input id="0" type="checkbox" name="rating0" value="true" hidden>
+                </div>
 
-            <h3>Rating:</h3>
-            <div class="rating">
-                <input id="1" type="radio" name="rating" value="1">
-                <label for="1">
-                    <span class="fa fa-star"></span>
-                </label>
-                <input id="2" type="radio" name="rating" value="2">
-                <label for="2">
-                    <span class="fa fa-star"></span>
-                </label>
-                <input id="3" type="radio" name="rating" value="3">
-                <label for="3">
-                    <span class="fa fa-star"></span>
-                </label>
-                <input id="4" type="radio" name="rating" value="4">
-                <label for="4">
-                    <span class="fa fa-star"></span>
-                </label>
-                <input id="5" type="radio" name="rating" value="5">
-                <label for="5">
-                    <span class="fa fa-star"></span>
-                </label>
-                <input id="0" type="radio" name="rating0" value="true" hidden>
-            </div>
-
-            <div>
-                <input type="submit" value="Save Review" formaction="/addBook" formmethod="post">
-                <!-- <input type="submit" value="Cancel Review" onclick="confirmCancelation()"> -->
-                <button type="button" onclick="confirmCancelation()"> Cancel </button>
-            </div>
-        </form>
+                <div>
+                    <input type="submit" value="Save Review" formaction="/addBook" formmethod="post">
+                    <button type="button" onclick="confirmCancelation()"> Cancel </button>
+                </div>
+            </form>
         <!--Add check to see whether there is already a review-->
         <!--If there is, maybe use the other layout-->
 
-        <button id="create_review" onclick="toogleVisibility()"> Create Review </button>
+            <button id="create_review" onclick="toogleVisibility()"> Create Review </button>
+        <% } else { %>
+            <div class="review-unchangeble">
+                <h2> <%= review.review_title %> </h2>
+                <p> <%= review.review_text %> </p>
+                
+                <% for(let i = 1; i <= review.rating; i++){ %>
+                    <label class="checked">
+                        <span class="fa fa-star"></span>
+                    </label>
+                <% } %>
+                <% for(let i= review.rating; i < 5; i++){ %>
+                    <label>
+                        <span class="fa fa-star"></span>
+                    </label>
+                <% } %>
+
+
+            </div>
+        <% } %>
+
         
     </div>
 </div>

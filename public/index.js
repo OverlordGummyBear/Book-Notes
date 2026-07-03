@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', function(){
 
     //Add checked (orange color) class clicked labels.    
     let currentRating = 0;
+    document.getElementById("0").checked = true; //mark it so it has a current rating of 0 if no clicks
+
     label.on("click", function(event) {
         const labelValue = $(this).attr("for"); //get the labelvalue for the clicked on radio
         document.getElementById(labelValue).checked = true; //get the radio with the labelvalue and set it to be clicked
