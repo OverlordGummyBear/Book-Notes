@@ -12,52 +12,61 @@
         <h3> By <%= author %> </h3>
         <h3> From <%= year %> </h3>
 
-        <% if(locals.review == undefined){ %>
-            <form id="review_form" style="display: none">
-                <input type="hidden" name="title" value="<%= title %>">
-                <input type="hidden" name="author" value="<%= author %>">
-                <input type="hidden" name="year" value="<%= year %>">
-                <input type="hidden" name="coverId" value="<%= coverId %>">
+            <div id="review-changable" style="<%= locals.review != undefined ? 'display:none' : 'display: inline-block' %> ">
+                <form id="review_form" style="display: none">
+                    <input type="hidden" name="title" value="<%= title %>">
+                    <input type="hidden" name="author" value="<%= author %>">
+                    <input type="hidden" name="year" value="<%= year %>">
+                    <input type="hidden" name="coverId" value="<%= coverId %>">
+                
+                    <input type="text" name="reviewTitle" placeholder="Title for your review" 
+                        <%if(locals.review != undefined){ %> 
+                            value="<%= review.review_title %>"    
+                        <% } %> required>
+                    <textarea id="review-text" name="reviewText" placeholder="Write review here..."
+                        required><% if(locals.review != undefined){ %><%= review.review_text %><% } %></textarea>
+                
+                    <h3>Rating:</h3>
+                    <div class="rating">
+                        <input id="1" type="radio" name="rating" value="1">
+                        <label for="1">
+                            <span class="fa fa-star"></span>
+                        </label>
+                        <input id="2" type="radio" name="rating" value="2">
+                        <label for="2">
+                            <span class="fa fa-star"></span>
+                        </label>
+                        <input id="3" type="radio" name="rating" value="3">
+                        <label for="3">
+                            <span class="fa fa-star"></span>
+                        </label>
+                        <input id="4" type="radio" name="rating" value="4">
+                        <label for="4">
+                            <span class="fa fa-star"></span>
+                        </label>
+                        <input id="5" type="radio" name="rating" value="5">
+                        <label for="5">
+                            <span class="fa fa-star"></span>
+                        </label>
+                        <input id="0" type="checkbox" name="rating0" value="true" hidden>
+                    </div>
+                
+                    <div>
+                        <% if(locals.review == undefined){ %>
+                            <input type="submit" value="Save" formaction="/addBook" formmethod="post">
+                        <% } else { %>
+                            <input type="submit" value="Update" formaction="/updateReview" formmethod="post">
+                        <% } %>
+                        <button type="button" onclick="confirmCancelation(<%= JSON.stringify(locals.review || null) %>)"> Cancel </button>
+                    </div>
+                </form>
+                <!--Add check to see whether there is already a review-->
+                <!--If there is, maybe use the other layout-->
+                
+                <button id="create_review" onclick="toogleVisibility()"> Create Review </button>
+            </div>
 
-                <input type="text" name="reviewTitle" placeholder="Title for your review" required>
-                <textarea type="textarea" id="review-text" name="reviewText" placeholder="Write review here..." required></textarea> 
-
-                <h3>Rating:</h3>
-                <div class="rating">
-                    <input id="1" type="radio" name="rating" value="1">
-                    <label for="1">
-                        <span class="fa fa-star"></span>
-                    </label>
-                    <input id="2" type="radio" name="rating" value="2">
-                    <label for="2">
-                        <span class="fa fa-star"></span>
-                    </label>
-                    <input id="3" type="radio" name="rating" value="3">
-                    <label for="3">
-                        <span class="fa fa-star"></span>
-                    </label>
-                    <input id="4" type="radio" name="rating" value="4">
-                    <label for="4">
-                        <span class="fa fa-star"></span>
-                    </label>
-                    <input id="5" type="radio" name="rating" value="5">
-                    <label for="5">
-                        <span class="fa fa-star"></span>
-                    </label>
-                    <input id="0" type="checkbox" name="rating0" value="true" hidden>
-                </div>
-
-                <div>
-                    <input type="submit" value="Save Review" formaction="/addBook" formmethod="post">
-                    <button type="button" onclick="confirmCancelation()"> Cancel </button>
-                </div>
-            </form>
-        <!--Add check to see whether there is already a review-->
-        <!--If there is, maybe use the other layout-->
-
-            <button id="create_review" onclick="toogleVisibility()"> Create Review </button>
-        <% } else { %>
-            <div class="review-unchangeble">
+            <div id="review-unchangeble" style="<%= locals.review != undefined ? 'display: inline-block' : 'display:none' %>">
                 <h2> <%= review.review_title %> </h2>
                 <p> <%= review.review_text %> </p>
                 
@@ -72,9 +81,12 @@
                     </label>
                 <% } %>
 
-
+                <form>
+                    <button type="button" onclick="enableEdit()"> Edit </button>
+                    <input type="submit" value="Delete" formaction="/delete" formmethod="delete">
+                    
+                </form>
             </div>
-        <% } %>
 
         
     </div>
@@ -82,6 +94,13 @@
 
 
 <script>
+    function enableEdit(){
+        document.getElementById("review-changable").style.display = "inline-block";
+        document.getElementById("review-unchangeble").style.display = "none";
+
+        toogleVisibility();
+    }
+
     function toogleVisibility() {
         var x = document.getElementById("review_form");
         document.getElementById("create_review").style.display = "none";
@@ -93,29 +112,25 @@
         }
     }
 
-    function validateForm() {
-        // Check if a radio button is selected
-        const ratingInputs = document.getElementsByName('rating');
-        const selectedRating = Array.from(ratingInputs).find(input => input.checked);
-
-        if (!selectedRating) {
-            document.getElementById('error-message').innerText = 'Please select a rating';
-        }
-    }
-
-    function confirmCancelation(){
-        const confirmed = window.confirm("Are you sure you want to cancel the review?")
+    function confirmCancelation(review){
+        const confirmed = window.confirm("Are you sure you want to cancel the review?");
 
         if(confirmed){
             var form = document.getElementById('review_form');
             form.reset();
             form.style.display = "none";
-            document.getElementById("create_review").style.display = "inline-block";
 
             //Reset the stars rating
             document.querySelector('label[for="4"]').click();
             document.querySelector('label[for="5"]').click();
             document.querySelector('label[for="5"]').click();
+
+            if(review != null){
+                document.getElementById("review-changable").style.display = "none";
+                document.getElementById("review-unchangeble").style.display = "inline-block"; 
+            } else {
+                document.getElementById("create_review").style.display = "inline-block";
+            }
         }
     }
 
