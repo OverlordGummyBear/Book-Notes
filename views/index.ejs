@@ -7,35 +7,69 @@
     </form>
 </div>
 
-<div class="sort">
-    <p>Sort by </p>
-    <form action="/sort" method="post">
-        <select id="sort" name="sort">
-            <option value="book_title"> Title </option>
-            <option value="author"> Author </option>
-            <option value="rating_upward"> Rating ASC </option>
-            <option value="rating_downward"> Rating DESC </option>
-            <option value="newest"> Newest </option>
-            <option value="oldest"> Oldest </option>
-        </select>
-        <input type="submit" value="Go">
-    </form>
-</div>
-
 <div class="content-container">
-    <% console.log(locals.reviews) %>
+    <div class="sort">
+        <p>Sort by </p>
+        <form action="/sort" method="post">
+            <select id="sort" name="sort">
+                <option value="book_title"> Title </option>
+                <option value="author"> Author </option>
+                <option value="rating_upward"> Rating ASC </option>
+                <option value="rating_downward"> Rating DESC </option>
+                <option value="newest"> Newest </option>
+                <option value="oldest"> Oldest </option>
+            </select>
+            <input type="submit" value="Go">
+        </form>
+    </div>
+
     <% if(locals.reviews){ %>
         <% reviews.forEach(review =>{ %>
-            <div class="review">
-                <% if(review.cover_id !='unknown' ){ %>
-                    <img src="https://covers.openlibrary.org/b/id/<%= review.cover_id %>-M.jpg" alt="picture of book cover">
-                <% } else { %>
-                    <img src="/images/book-placeholder-m.jpg" alt="picture of placeholder cover">
-                <% } %>
-                <p> Book title: <%= review.title %> </p>
-                <p> Author: <%= review.author %> </p>
-                <p> Rating: <%= review.rating %> </p>
-                <p> Date: <%= review.date %> </p>
+            <div class="review-container">
+                <div class="book-info">
+                    <form action="/book" method="post">
+                        <input type="hidden" name="title" value="<%= review.title %>">
+                        <input type="hidden" name="author" value="<%= review.author %>">
+                        <input type="hidden" name="year" value="<%= review.year %>">
+                        <input type="hidden" name="cover_i" value="<%= review.cover_id %>">
+
+                        <% if(review.cover_id != null ){ %>
+                            <input type="image" src="https://covers.openlibrary.org/b/id/<%= review.cover_id %>-M.jpg">
+                        <% } else { %>
+                            <input type="image" src="/images/book-placeholder-m.jpg">
+                        <% } %>
+                    </form>
+
+                    <p> Book title: <%= review.title %> </p>
+                    <p> Author: <%= review.author %></p>
+                    
+                    
+                </div>
+                <div class="review-details">
+                    <h2 style="margin-top: 0px;"> <%= review.review_title %> </h2>
+                    <p class="reviewText"> <%= review.review_text %> </p>
+
+                    <!--Stars-->
+                    <p> Rating </p>
+                    <div class="starArray">
+                        <% for(let i=1; i <=review.rating; i++){ %>
+                            <label class="checked stars<%= review.rating %>" style="pointer-events: none">
+                                <span class="fa fa-star"></span>
+                            </label>
+                        <% } %>
+                            <% for(let i=review.rating; i < 5; i++){ %>
+                                <label style="pointer-events: none">
+                                    <span class="fa fa-star"></span>
+                                </label>
+                        <% } %>
+
+                        <!--Date-->
+                        <p> Date: <%= review.date %>
+                        </p>
+                    </div>
+
+                    
+                </div>
             </div>
         <% }) %>
     <% } %>

@@ -67,21 +67,24 @@
 
             <% if(locals.review != undefined){ %>
                 <div id="review-unchangeble" style="<%= locals.review != undefined ? 'display: inline-block' : 'display:none' %>">
-                    <h2> <%= locals.review.review_title %> </h2>
-                    <p> <%= locals.review.review_text %> </p>
+                    <h2 class="review-title" style="font-size: 25px;"> <%= locals.review.review_title %> </h2>
+                    <p style> <%= locals.review.review_text %> </p>
                     
-                    <% for(let i = 1; i <= review.rating; i++){ %>
-                        <label class="checked stars<%= review.rating %>" style="pointer-events: none">
-                            <span class="fa fa-star"></span>
-                        </label>
-                    <% } %>
-                    <% for(let i = review.rating; i < 5; i++){ %>
-                        <label style="pointer-events: none">
-                            <span class="fa fa-star"></span>
-                        </label>
-                    <% } %>
+                    <h4>Rating</h4>
+                    <div class="starArray">
+                        <% for(let i = 1; i <= review.rating; i++){ %>
+                            <label class="checked stars<%= review.rating %>" style="pointer-events: none">
+                                <span class="fa fa-star"></span>
+                            </label>
+                        <% } %>
+                        <% for(let i = review.rating; i < 5; i++){ %>
+                            <label style="pointer-events: none">
+                                <span class="fa fa-star"></span>
+                            </label>
+                        <% } %>
+                    </div>
 
-                    <form>
+                    <form id="unchangeble-form">
                         <button type="button" onclick="enableEdit(<%= JSON.stringify(locals.review.rating) %>)"> Edit </button>
                         <button onclick="deleteData('<%=review.book_id%>')" type="button">Delete</button>
                         
@@ -149,11 +152,11 @@
 
                 currentRating = temporaryCurrent;
             } 
-        } 
 
-        if(review == null){ //Make create review button appear if canceling
-            document.getElementById("create_review").style.display = "inline-block";
-        }
+            if (review == null) { //Make create review button appear if canceling
+                document.getElementById("create_review").style.display = "inline-block";
+            }
+        } 
     }
 
     async function deleteData(bookId){

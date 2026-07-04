@@ -23,7 +23,7 @@ let sort = "book_title";
 let searchLimit = 50;
 
 app.get("/", async (req, res) => {
-    switch(sort){
+    switch(sort){ //Switch to get the sort option
         case "book_title":
             sort = "b.title ASC";
             break;
@@ -53,7 +53,7 @@ app.get("/", async (req, res) => {
     );
 
     const data = result.rows; //check what happens if there are no reviews
-    console.log(data);
+    //console.log(data);
 
     res.render("index.ejs", {reviews: data});
 
@@ -103,8 +103,6 @@ app.post("/book", async (req, res) => {
     const data = response.rows;
     const isFound = data.find((book) => book.title === title);
     const review = isFound == undefined ? undefined : isFound;
-
-    console.log(review);
 
     res.render("book.ejs", {
         title: title,
