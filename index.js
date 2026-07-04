@@ -52,10 +52,11 @@ app.get("/", async (req, res) => {
             ORDER BY ${sort}`
     );
 
-    const data = result.rows; //check what happens if there are no reviews
-    //console.log(data);
+    const data = result.rows;
 
-    res.render("index.ejs", {reviews: data});
+    res.render("index.ejs", {
+        reviews: data
+    });
 
     } catch (error) {
         console.log("Could not execute query: ", error);

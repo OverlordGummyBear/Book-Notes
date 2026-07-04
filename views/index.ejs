@@ -23,7 +23,7 @@
         </form>
     </div>
 
-    <% if(locals.reviews){ %>
+    <% if(locals.reviews != undefined && reviews.length > 0){ %>
         <% reviews.forEach(review =>{ %>
             <div class="review-container">
                 <div class="book-info">
@@ -72,6 +72,10 @@
                 </div>
             </div>
         <% }) %>
+    <% } else { %> 
+        <div class="no-review-container">
+            <h2>There are currently no reviews</h2>
+        </div>
     <% } %>
 </div>
 

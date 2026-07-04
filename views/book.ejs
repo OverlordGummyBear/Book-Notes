@@ -124,8 +124,6 @@
     function confirmCancelation(review){
         const confirmed = window.confirm("Are you sure you want to cancel the review?");
 
-        console.log(confirmed);
-
         if(confirmed){
             var form = document.getElementById('review_form');
             form.reset();
@@ -144,17 +142,19 @@
                 for (let i = 0; i < currentRating; i++) {
                     $(starArray[i]).addClass("checked");
                 }  
-
-                
             }
-
-            console.log("Rating: " + review.rating);
-            console.log("CurrentRating: " + currentRating);
 
             if (review == null) { //Make create review button appear if canceling
                 document.getElementById("create_review").style.display = "inline-block";
+
+                document.querySelectorAll('.rating label').forEach(label => { //Reset the stars when canceling 
+                    label.classList.remove('checked');
+                    label.className = label.className.replace(/\bstars\d\b/g, '').trim();
+                });
             }
         }
+
+        if(review == null) currentRating = 0;
     }
 
     async function deleteData(bookId){
