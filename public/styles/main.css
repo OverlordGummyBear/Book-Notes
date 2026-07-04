@@ -277,4 +277,12 @@ input[type="radio"] {
     h1 {
         margin: 0% 20% 0% 10%;
     }
+    
+}
+
+@media (max-width: 1000px){
+    textarea,
+    #review-unchangeble p {
+        min-width: 0px;
+    }
 }
