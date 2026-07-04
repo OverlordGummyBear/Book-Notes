@@ -103,13 +103,11 @@
         document.getElementById("review-unchangeble").style.display = "none";
 
         toogleVisibility();
-        
-        isEditing = true;
 
+        currentRating = 0; //reset to 0 so the correct amount of stars is checked when the label beneath is clicked on
         document.querySelector('label[for="' + starID + '"]').click();
         
         currentRating = starID;
-        console.log(currentRating);
     }
 
     function toogleVisibility() {
@@ -135,9 +133,6 @@
 
             let temporaryCurrent = currentRating;
 
-            //console.log("Rating: " + review.rating);
-            //console.log("CurrentRating: " + currentRating);
-
             if(review != null){
                 currentRating = review.rating;
 
@@ -150,13 +145,16 @@
                     $(starArray[i]).addClass("checked");
                 }  
 
-                currentRating = temporaryCurrent;
-            } 
+                
+            }
+
+            console.log("Rating: " + review.rating);
+            console.log("CurrentRating: " + currentRating);
 
             if (review == null) { //Make create review button appear if canceling
                 document.getElementById("create_review").style.display = "inline-block";
             }
-        } 
+        }
     }
 
     async function deleteData(bookId){

@@ -17,9 +17,9 @@ document.addEventListener('DOMContentLoaded', function(){
 
         label.removeClass("checked");        
 
-        //console.log(Number(currentRating) != Number(rating));
-        //console.log("Rating: " + rating);
-        //console.log("CurrentRating: " + currentRating);
+        console.log(Number(currentRating) != Number(rating));
+        console.log("Rating: " + rating);
+        console.log("CurrentRating: " + currentRating);
 
         if(currentRating != rating){       
             for (let i = 0; i < labelValue; i++) {            
