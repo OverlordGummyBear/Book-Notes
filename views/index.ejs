@@ -11,17 +11,19 @@
     <div class="sort">
         <p>Sort by </p>
         <form action="/sort" method="post">
-            <select id="sort" name="sort">
-                <option value="book_title"> Title </option>
-                <option value="author"> Author </option>
-                <option value="rating_upward"> Rating ASC </option>
-                <option value="rating_downward"> Rating DESC </option>
-                <option value="newest"> Newest </option>
-                <option value="oldest"> Oldest </option>
+            <select id="sort" name="sort"> <!--Make sure that the chosen sorting option is selected when loading the page -->
+                <option value="book_title" <%=currentSort==='book_title' ? 'selected' : '' %>> Title </option>
+                <option value="author" <%=currentSort==='author' ? 'selected' : '' %>>Author</option>
+                <option value="rating_upward" <%=currentSort==='rating_upward' ? 'selected' : '' %>>Rating ASC</option>
+                <option value="rating_downward" <%=currentSort==='rating_downward' ? 'selected' : '' %>>Rating DESC</option>
+                <option value="newest" <%=currentSort==='newest' ? 'selected' : '' %>>Newest</option>
+                <option value="oldest" <%=currentSort==='oldest' ? 'selected' : '' %>>Oldest</option>
             </select>
             <input type="submit" value="Go">
         </form>
     </div>
+
+    
 
     <% if(locals.reviews != undefined && reviews.length > 0){ %>
         <% reviews.forEach(review =>{ %>

@@ -20,9 +20,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
 let sort = "book_title";
+let currentSort = sort;
 let searchLimit = 50;
 
 app.get("/", async (req, res) => {
+    currentSort = sort;
+    
     switch(sort){ //Switch to get the sort option
         case "book_title":
             sort = "b.title ASC";
@@ -55,7 +58,8 @@ app.get("/", async (req, res) => {
     const data = result.rows;
 
     res.render("index.ejs", {
-        reviews: data
+        reviews: data,
+        currentSort: currentSort
     });
 
     } catch (error) {
