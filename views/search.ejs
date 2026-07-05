@@ -1,5 +1,12 @@
 <%- include("partials/header.ejs") %>
 
+<div class="search-container" style="margin-bottom: 30px;">
+    <form class="book-search" action="/search" method="post">
+        <input class="search-bar" type="text" name="search" placeholder="Enter book name, author or isbn">
+        <input type="submit" value="Search">
+    </form>
+</div>
+
 <div class="search-result-container">
     <% if(total_results > 0){ %>
         <% books.forEach(book => { %>
